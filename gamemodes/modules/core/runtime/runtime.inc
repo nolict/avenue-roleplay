@@ -67,3 +67,9 @@ stock Runtime_OnDialogResponse(playerid, dialogid, response, listitem, const inp
 
     return Character_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 }
+
+// ====== Runtime_OnPlayerClickMap ======
+stock Runtime_OnPlayerClickMap(playerid, Float:x, Float:y, Float:z)
+{
+    return Admin_OnPlayerClickMap(playerid, x, y, z);
+}

@@ -10,11 +10,13 @@
 forward OnAdminAccountLevelLoaded(playerid, accountId);
 
 new E_ADMIN_LEVEL:g_AdminLevel[MAX_PLAYERS];
+new bool:g_AdminDuty[MAX_PLAYERS];
 
 // ====== AdminSession_Reset ======
 stock AdminSession_Reset(playerid)
 {
     g_AdminLevel[playerid] = ADMIN_LEVEL_NONE;
+    g_AdminDuty[playerid] = false;
     return 1;
 }
 
@@ -22,6 +24,12 @@ stock AdminSession_Reset(playerid)
 stock AdminSession_SetLevel(playerid, E_ADMIN_LEVEL:level)
 {
     g_AdminLevel[playerid] = level;
+
+    if (level == ADMIN_LEVEL_NONE)
+    {
+        g_AdminDuty[playerid] = false;
+    }
+
     return 1;
 }
 
@@ -29,6 +37,19 @@ stock AdminSession_SetLevel(playerid, E_ADMIN_LEVEL:level)
 stock E_ADMIN_LEVEL:AdminSession_GetLevel(playerid)
 {
     return g_AdminLevel[playerid];
+}
+
+// ====== AdminSession_SetDuty ======
+stock AdminSession_SetDuty(playerid, bool:isDuty)
+{
+    g_AdminDuty[playerid] = isDuty;
+    return 1;
+}
+
+// ====== AdminSession_IsOnDuty ======
+stock bool:AdminSession_IsOnDuty(playerid)
+{
+    return g_AdminDuty[playerid];
 }
 
 // ====== Admin_IsAuthorized ======
@@ -43,6 +64,23 @@ stock bool:Admin_IsAuthorized(playerid, E_ADMIN_LEVEL:minLevel)
     if (AdminSession_GetLevel(playerid) < minLevel)
     {
         PermissionError(playerid);
+        return false;
+    }
+
+    return true;
+}
+
+// ====== Admin_IsDutyAuthorized ======
+stock bool:Admin_IsDutyAuthorized(playerid, E_ADMIN_LEVEL:minLevel)
+{
+    if (!Admin_IsAuthorized(playerid, minLevel))
+    {
+        return false;
+    }
+
+    if (!AdminSession_IsOnDuty(playerid))
+    {
+        Admin_SendAdminText(playerid, "You must use /aduty before using this admin action.");
         return false;
     }
 
@@ -82,11 +120,12 @@ stock Admin_SendServerText(playerid, const text[])
 // ====== Admin_SendCommandList ======
 stock Admin_SendCommandList(playerid)
 {
-    Admin_SendAdminText(playerid, "/adminlevel /ahelp");
+    Admin_SendAdminText(playerid, "/adminlevel /ahelp /aduty");
 
     if (AdminSession_GetLevel(playerid) >= ADMIN_LEVEL_MODERATOR)
     {
         Admin_SendAdminText(playerid, "/spec /goto /gethere");
+        Admin_SendAdminText(playerid, "Map marker teleport is available while on duty.");
     }
 
     if (AdminSession_GetLevel(playerid) >= ADMIN_LEVEL_HEAD_ADMIN)
@@ -197,6 +236,24 @@ stock Admin_OnPlayerDisconnect(playerid, reason)
 {
     #pragma unused reason
     return AdminSession_Reset(playerid);
+}
+
+// ====== Admin_OnPlayerClickMap ======
+stock Admin_OnPlayerClickMap(playerid, Float:x, Float:y, Float:z)
+{
+    #pragma unused z
+
+    if (!Admin_IsDutyAuthorized(playerid, ADMIN_LEVEL_HELPER))
+    {
+        return 0;
+    }
+
+    TogglePlayerSpectating(playerid, false);
+    SetPlayerInterior(playerid, 0);
+    SetPlayerVirtualWorld(playerid, 0);
+    SetPlayerPosFindZ(playerid, x, y, 999.0);
+    Admin_SendAdminText(playerid, "Teleported to your map marker.");
+    return 1;
 }
 
 // ====== Admin_LoadAccountLevel ======

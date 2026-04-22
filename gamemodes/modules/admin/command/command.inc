@@ -38,13 +38,34 @@ CMD:ahelp(playerid, params[])
     return Admin_SendCommandList(playerid);
 }
 
+CMD:aduty(playerid, params[])
+{
+    #pragma unused params
+
+    if (!Admin_IsAuthorized(playerid, ADMIN_LEVEL_HELPER))
+    {
+        return 1;
+    }
+
+    if (AdminSession_IsOnDuty(playerid))
+    {
+        AdminSession_SetDuty(playerid, false);
+        Admin_SendAdminText(playerid, "Admin duty disabled.");
+        return 1;
+    }
+
+    AdminSession_SetDuty(playerid, true);
+    Admin_SendAdminText(playerid, "Admin duty enabled.");
+    return 1;
+}
+
 // ====== Moderator Level Commands ======
 
 CMD:spec(playerid, params[])
 {
     new targetid;
 
-    if (!Admin_IsAuthorized(playerid, ADMIN_LEVEL_MODERATOR))
+    if (!Admin_IsDutyAuthorized(playerid, ADMIN_LEVEL_MODERATOR))
     {
         return 1;
     }
@@ -71,7 +92,7 @@ CMD:goto(playerid, params[])
     new targetid;
     new Float:x, Float:y, Float:z;
 
-    if (!Admin_IsAuthorized(playerid, ADMIN_LEVEL_MODERATOR))
+    if (!Admin_IsDutyAuthorized(playerid, ADMIN_LEVEL_MODERATOR))
     {
         return 1;
     }
@@ -100,7 +121,7 @@ CMD:gethere(playerid, params[])
     new targetid;
     new Float:x, Float:y, Float:z;
 
-    if (!Admin_IsAuthorized(playerid, ADMIN_LEVEL_MODERATOR))
+    if (!Admin_IsDutyAuthorized(playerid, ADMIN_LEVEL_MODERATOR))
     {
         return 1;
     }

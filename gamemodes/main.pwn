@@ -35,3 +35,9 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 {
     return Runtime_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
 }
+
+// ====== OnPlayerClickMap ======
+public OnPlayerClickMap(playerid, Float:fX, Float:fY, Float:fZ)
+{
+    return Runtime_OnPlayerClickMap(playerid, fX, fY, fZ);
+}

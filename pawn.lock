@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"generated": "2026-04-22T14:46:48.613450374Z",
+	"generated": "2026-04-22T15:05:18.683249594Z",
 	"sampctl_version": "1.13.0",
 	"dependencies": {
 		"github.com/Southclaws/zcmd": {
@@ -202,6 +202,6 @@
 	"build": {
 		"entry": "gamemodes/main.pwn",
 		"output": "gamemodes/main.amx",
-		"output_hash": "sha256:9f9622b19b32da9a7b7531e95ec6f3e18cbc6599f12d7fae32e37deae83f34f0"
+		"output_hash": "sha256:84b55fd8bca190ccfa3a0de5a5a64c7d5745e3e28bc3ba081d10130a0bf89d23"
 	}
 }
