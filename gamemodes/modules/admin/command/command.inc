@@ -216,3 +216,24 @@ CMD:setadmin(playerid, params[])
 
     return 1;
 }
+
+// ====== Developer Level Commands ======
+
+CMD:setinterior(playerid, params[])
+{
+    new interiorWorldId;
+    new variantId;
+
+    if (!Admin_IsDutyAuthorized(playerid, ADMIN_LEVEL_DEVELOPER))
+    {
+        return 1;
+    }
+
+    if (!Admin_ParseInteriorId(playerid, params, interiorWorldId, variantId))
+    {
+        return 1;
+    }
+
+    Admin_TeleportToInterior(playerid, interiorWorldId, variantId);
+    return 1;
+}
