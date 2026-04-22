@@ -1,8 +1,17 @@
 {
 	"version": 1,
-	"generated": "2026-04-22T12:59:06.928150604Z",
+	"generated": "2026-04-22T14:18:09.933828733Z",
 	"sampctl_version": "1.13.0",
 	"dependencies": {
+		"github.com/Southclaws/zcmd": {
+			"constraint": "",
+			"resolved": "HEAD",
+			"commit": "1ab0082e316de399f4d061f5caca85a1630f2427",
+			"integrity": "commit:1ab0082e316de399f4d061f5caca85a1630f2427",
+			"site": "github.com",
+			"user": "Southclaws",
+			"repo": "zcmd"
+		},
 		"github.com/Sreyas-Sreelal/samp-bcrypt": {
 			"constraint": ":0.4.1",
 			"resolved": "0.4.1",
@@ -193,6 +202,6 @@
 	"build": {
 		"entry": "gamemodes/main.pwn",
 		"output": "gamemodes/main.amx",
-		"output_hash": "sha256:1f154f38f08296faf95a4056f39011af82137e7c513e63432b909eff3d1a554d"
+		"output_hash": "sha256:e46ef4d91f32f9367646571978f47816052622e999d2368c5f06cef90b238de3"
 	}
 }

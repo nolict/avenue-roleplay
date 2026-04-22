@@ -27,3 +27,24 @@ CREATE TABLE IF NOT EXISTS `characters` (
     UNIQUE KEY `uq_characters_name` (`name`),
     KEY `idx_characters_account_id` (`account_id`)
 );
+
+CREATE TABLE IF NOT EXISTS `admin_accounts` (
+    `account_id` INT UNSIGNED NOT NULL,
+    `level` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    `assigned_by` INT UNSIGNED NULL DEFAULT NULL,
+    `assigned_at` DATETIME NULL DEFAULT NULL,
+    `updated_at` DATETIME NULL DEFAULT NULL,
+    PRIMARY KEY (`account_id`),
+    KEY `idx_admin_accounts_level` (`level`)
+);
+
+-- Bootstrap first admin manually when needed:
+-- INSERT INTO `admin_accounts` (`account_id`, `level`, `assigned_by`, `assigned_at`, `updated_at`)
+-- SELECT `id`, 8, NULL, NOW(), NOW()
+-- FROM `accounts`
+-- WHERE `username` = 'YourAccountName'
+-- ON DUPLICATE KEY UPDATE
+--     `level` = VALUES(`level`),
+--     `assigned_by` = VALUES(`assigned_by`),
+--     `assigned_at` = NOW(),
+--     `updated_at` = NOW();

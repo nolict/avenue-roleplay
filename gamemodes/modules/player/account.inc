@@ -311,6 +311,7 @@ public OnAccountRegisterInsert(playerid)
     }
 
     AccountSession_SetAuthenticated(playerid, accountId, g_AccountPendingUsername[playerid]);
+    Admin_LoadAccountLevel(playerid, accountId);
     Acc_ResetPendingState(playerid);
     SendServerMessage(playerid, "UCP registration successful.");
     return Character_ShowGateway(playerid);
@@ -355,6 +356,7 @@ public OnAccountPasswordVerified(playerid, bool:success)
     }
 
     AccountSession_SetAuthenticated(playerid, g_AccountPendingId[playerid], g_AccountPendingUsername[playerid]);
+    Admin_LoadAccountLevel(playerid, g_AccountPendingId[playerid]);
     Account_UpdateLastLoginAt(g_AccountPendingId[playerid]);
     Acc_ResetPendingState(playerid);
     SendServerMessage(playerid, "UCP login successful.");

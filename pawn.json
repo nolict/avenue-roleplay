@@ -9,7 +9,8 @@
 		"pawn-lang/samp-stdlib@open.mp",
 		"pawn-lang/pawn-stdlib@open.mp",
 		"pBlueG/SA-MP-MySQL:R41-4",
-		"Sreyas-Sreelal/samp-bcrypt:0.4.1"
+		"Sreyas-Sreelal/samp-bcrypt:0.4.1",
+		"Southclaws/zcmd"
 	],
 	"local": true,
 	"runtime": {

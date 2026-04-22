@@ -10,6 +10,7 @@
 #include <modules/core/database/connection.inc>
 
 #include <modules/player/account/session/state.inc>
+#include <modules/admin/admin.inc>
 #include <modules/player/account.inc>
 
 #include <modules/player/character/session/state.inc>
@@ -27,6 +28,7 @@ stock Runtime_OnGameModeInit()
         return 0;
     }
 
+    Admin_OnGameModeInit();
     Character_OnGameModeInit();
     Account_OnGameModeInit();
     return 1;
@@ -42,6 +44,7 @@ stock Runtime_OnGameModeExit()
 // ====== Runtime_OnPlayerConnect ======
 stock Runtime_OnPlayerConnect(playerid)
 {
+    Admin_OnPlayerConnect(playerid);
     Character_OnPlayerConnect(playerid);
     return Account_OnPlayerConnect(playerid);
 }
@@ -49,6 +52,7 @@ stock Runtime_OnPlayerConnect(playerid)
 // ====== Runtime_OnPlayerDisconnect ======
 stock Runtime_OnPlayerDisconnect(playerid, reason)
 {
+    Admin_OnPlayerDisconnect(playerid, reason);
     Character_OnPlayerDisconnect(playerid, reason);
     return Account_OnPlayerDisconnect(playerid, reason);
 }
