@@ -106,6 +106,15 @@ stock bool:Admin_ParsePlayerTarget(playerid, const params[], const syntaxText[],
         return false;
     }
 
+    for (new i = 0; params[i] != '\0'; i++)
+    {
+        if (params[i] < '0' || params[i] > '9')
+        {
+            Admin_SendSyntaxText(playerid, syntaxText);
+            return false;
+        }
+    }
+
     targetid = strval(params);
 
     if (targetid == INVALID_PLAYER_ID || !IsPlayerConnected(targetid))
@@ -141,6 +150,30 @@ stock bool:Admin_ParseSetAdminParams(playerid, const params[], &targetid, &level
     strmid(targetText, params, 0, splitIndex, sizeof(targetText));
     strmid(levelText, params, splitIndex + 1, strlen(params), sizeof(levelText));
 
+    if (!strlen(targetText) || !strlen(levelText))
+    {
+        SendSyntaxMessage(playerid, "/setadmin [playerid] [level]");
+        return false;
+    }
+
+    for (new i = 0; targetText[i] != '\0'; i++)
+    {
+        if (targetText[i] < '0' || targetText[i] > '9')
+        {
+            SendSyntaxMessage(playerid, "/setadmin [playerid] [level]");
+            return false;
+        }
+    }
+
+    for (new i = 0; levelText[i] != '\0'; i++)
+    {
+        if (levelText[i] < '0' || levelText[i] > '9')
+        {
+            SendSyntaxMessage(playerid, "/setadmin [playerid] [level]");
+            return false;
+        }
+    }
+
     targetid = strval(targetText);
     level = strval(levelText);
 
@@ -175,7 +208,7 @@ stock Admin_LoadAccountLevel(playerid, accountId)
         Database_GetHandle(),
         query,
         sizeof(query),
-        "SELECT `level` FROM `admin_accounts` WHERE `account_id` = %d LIMIT 1",
+        "SELECT `admin_level` FROM `accounts` WHERE `id` = %d LIMIT 1",
         accountId
     );
     mysql_tquery(Database_GetHandle(), query, "OnAdminAccountLevelLoaded", "dd", playerid, accountId);
@@ -185,16 +218,16 @@ stock Admin_LoadAccountLevel(playerid, accountId)
 // ====== Admin_SetAccountLevel ======
 stock Admin_SetAccountLevel(accountId, level, assignedByAccountId)
 {
-    new query[256];
+    new query[128];
+    #pragma unused assignedByAccountId
 
     mysql_format(
         Database_GetHandle(),
         query,
         sizeof(query),
-        "INSERT INTO `admin_accounts` (`account_id`, `level`, `assigned_by`, `assigned_at`, `updated_at`) VALUES (%d, %d, %d, NOW(), NOW()) ON DUPLICATE KEY UPDATE `level` = VALUES(`level`), `assigned_by` = VALUES(`assigned_by`), `assigned_at` = NOW(), `updated_at` = NOW()",
-        accountId,
+        "UPDATE `accounts` SET `admin_level` = %d, `updated_at` = NOW() WHERE `id` = %d LIMIT 1",
         level,
-        assignedByAccountId
+        accountId
     );
     mysql_tquery(Database_GetHandle(), query);
     return 1;
@@ -207,7 +240,7 @@ public OnAdminAccountLevelLoaded(playerid, accountId)
 
     if (cache_num_rows() > 0)
     {
-        cache_get_value_name_int(0, "level", levelValue);
+        cache_get_value_name_int(0, "admin_level", levelValue);
     }
 
     if (AccountSession_IsAuthenticated(playerid) && AccountSession_GetId(playerid) == accountId)

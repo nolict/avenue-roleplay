@@ -151,6 +151,12 @@ CMD:setadmin(playerid, params[])
         return 1;
     }
 
+    if (targetid == playerid)
+    {
+        SendErrorMessage(playerid, "You cannot change your own admin level.");
+        return 1;
+    }
+
     if (!AccountSession_IsAuthenticated(targetid))
     {
         SendErrorMessage(playerid, "Target player is not logged into an account.");
@@ -163,7 +169,7 @@ CMD:setadmin(playerid, params[])
         return 1;
     }
 
-    if (AdminSession_GetLevel(playerid) <= AdminSession_GetLevel(targetid) && targetid != playerid)
+    if (AdminSession_GetLevel(playerid) <= AdminSession_GetLevel(targetid))
     {
         SendErrorMessage(playerid, "You cannot edit an equal or higher admin level.");
         return 1;

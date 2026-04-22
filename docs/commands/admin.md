@@ -32,14 +32,14 @@ For consistency, commands are grouped inside that file by comment headers that r
 | --- | --- | --- | --- |
 | `/adminlevel` | None, but requires authenticated account | Shows the active admin level currently loaded into the runtime session. Useful for verifying whether admin data has been loaded correctly after login. | `/adminlevel` |
 | `/ahelp` | Helper | Displays the admin command list available to the current admin level. | `/ahelp` |
-| `/spec [playerid]` | Moderator | Starts spectating the target player. The command rejects self-spectate and invalid targets. | `/spec 3` |
-| `/goto [playerid]` | Moderator | Teleports the admin to the target player and synchronizes interior and virtual world with the target. | `/goto 8` |
-| `/gethere [playerid]` | Moderator | Teleports the target player to the admin and synchronizes interior and virtual world with the admin. | `/gethere 12` |
-| `/setadmin [playerid] [level]` | Head Administrator | Assigns or updates the target account's admin level. The command rejects invalid targets, invalid levels, and attempts to modify equal or higher authority. | `/setadmin 7 2` |
+| `/spec [playerid]` | Moderator | Starts spectating the target player. The command rejects self-spectate, invalid targets, and non-numeric target input. | `/spec 3` |
+| `/goto [playerid]` | Moderator | Teleports the admin to the target player and synchronizes interior and virtual world with the target. The command rejects invalid targets, self-target, and non-numeric target input. | `/goto 8` |
+| `/gethere [playerid]` | Moderator | Teleports the target player to the admin and synchronizes interior and virtual world with the admin. The command rejects invalid targets, self-target, and non-numeric target input. | `/gethere 12` |
+| `/setadmin [playerid] [level]` | Head Administrator | Assigns or updates the target account's admin level. The command rejects invalid targets, self-target, non-numeric input, invalid levels, and attempts to modify equal or higher authority. | `/setadmin 7 2` |
 
 ## Notes
 
 - Admin roles are owned by account, not character.
-- The `admin_accounts` table is the source of truth for persistent admin level data.
+- The `accounts.admin_level` column is the source of truth for persistent admin level data.
 - The runtime session is refreshed after successful account authentication.
 - The first admin can be bootstrapped manually with the commented SQL snippet inside `database/schema.sql`.
