@@ -27,7 +27,6 @@ stock bool:Acc_IsUsernameValid(const username[]);
 stock Account_EnsureSchema();
 stock Acc_HandleRegPassSubmit(playerid, const inputtext[]);
 stock Acc_HandleLoginPassSubmit(playerid, const inputtext[]);
-stock Character_ShowGateway(playerid);
 forward dialog_AccountInvalidName(playerid, response, listitem, inputtext[]);
 forward dialog_AccountRegisterPassword(playerid, response, listitem, inputtext[]);
 forward dialog_AccountLoginPassword(playerid, response, listitem, inputtext[]);
@@ -150,6 +149,7 @@ stock Acc_ShowRegPassDialog(playerid)
 {
     new header[144];
 
+    Character_SetAuthCamera(playerid, AUTH_CAMERA_POSITION_REGISTER);
     Interface_FormatDialogHeader(header, sizeof(header), "Account", "Register Password");
     return Dialog_Show(playerid, AccountRegisterPassword, DIALOG_STYLE_PASSWORD, header,
         ""TOMATO"UCP Setup"WHITE"\n\
@@ -166,6 +166,7 @@ stock Acc_ShowLoginPassDialog(playerid)
 {
     new header[144];
 
+    Character_SetAuthCamera(playerid, AUTH_CAMERA_POSITION_LOGIN);
     Interface_FormatDialogHeader(header, sizeof(header), "Account", "Login Password");
     return Dialog_Show(playerid, AccountLoginPassword, DIALOG_STYLE_PASSWORD, header,
         ""TOMATO"UCP Authentication"WHITE"\n\

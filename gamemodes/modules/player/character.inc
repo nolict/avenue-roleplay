@@ -6,11 +6,34 @@
 #include <a_mysql>
 
 #define MAX_CHARACTERS_PER_ACCOUNT (3)
+#define AUTH_CAMERA_REGISTER_X (2230.7346)
+#define AUTH_CAMERA_REGISTER_Y (-1644.8651)
+#define AUTH_CAMERA_REGISTER_Z (18.4927)
+#define AUTH_CAMERA_REGISTER_A (217.1169)
+#define AUTH_CAMERA_LOGIN_X (2222.2563)
+#define AUTH_CAMERA_LOGIN_Y (-1735.1221)
+#define AUTH_CAMERA_LOGIN_Z (16.3925)
+#define AUTH_CAMERA_LOGIN_A (341.2126)
+#define AUTH_CAMERA_GATEWAY_X (2262.3665)
+#define AUTH_CAMERA_GATEWAY_Y (-1754.3557)
+#define AUTH_CAMERA_GATEWAY_Z (16.5469)
+#define AUTH_CAMERA_GATEWAY_A (188.7965)
+#define AUTH_CAMERA_HEIGHT_OFFSET (2.75)
+#define AUTH_CAMERA_REAPPLY_DELAY (150)
+#define CHARACTER_LOADING_TITLE ("Loading Character...")
+#define CHARACTER_LOADING_SUBTITLE ("Please wait")
 
 enum E_CHARACTER_GENDER
 {
     CHARACTER_GENDER_MALE = 0,
     CHARACTER_GENDER_FEMALE
+}
+
+enum E_AUTH_CAMERA_POSITION
+{
+    AUTH_CAMERA_POSITION_REGISTER = 0,
+    AUTH_CAMERA_POSITION_LOGIN,
+    AUTH_CAMERA_POSITION_GATEWAY
 }
 
 new g_CharacterSelectionCount[MAX_PLAYERS];
@@ -26,9 +49,13 @@ stock Character_HandleCreateSubmit(playerid);
 stock bool:Character_IsNameValid(const name[]);
 stock Character_SavePosition(playerid);
 stock Character_ShowCreateGenDialog(playerid);
+stock Character_SetAuthCamera(playerid, E_AUTH_CAMERA_POSITION:cameraPosition);
+stock Character_ResetPlayerView(playerid);
+stock Character_ApplyAuthCamera(playerid, E_AUTH_CAMERA_POSITION:cameraPosition);
 forward dialog_CharacterSelect(playerid, response, listitem, inputtext[]);
 forward dialog_CharacterCreateName(playerid, response, listitem, inputtext[]);
 forward dialog_CharacterCreateGender(playerid, response, listitem, inputtext[]);
+forward OnCharacterReapplyAuthCamera(playerid, cameraPosition);
 
 // ====== Character_OnGameModeInit ======
 stock Character_OnGameModeInit()
@@ -41,6 +68,8 @@ stock Character_OnPlayerConnect(playerid)
 {
     Character_ResetPendingState(playerid);
     CharacterSession_Reset(playerid);
+    Character_ResetPlayerView(playerid);
+    Character_SetAuthCamera(playerid, AUTH_CAMERA_POSITION_REGISTER);
     return 1;
 }
 
@@ -72,6 +101,82 @@ stock Character_EnsureSchema()
     return 1;
 }
 
+// ====== Character_ResetPlayerView ======
+stock Character_ResetPlayerView(playerid)
+{
+    TogglePlayerSpectating(playerid, true);
+    SetPlayerInterior(playerid, 0);
+    SetPlayerVirtualWorld(playerid, 0);
+    return 1;
+}
+
+// ====== Character_SetAuthCamera ======
+stock Character_SetAuthCamera(playerid, E_AUTH_CAMERA_POSITION:cameraPosition)
+{
+    Character_ApplyAuthCamera(playerid, cameraPosition);
+    SetTimerEx("OnCharacterReapplyAuthCamera", AUTH_CAMERA_REAPPLY_DELAY, false, "dd", playerid, _:cameraPosition);
+    return 1;
+}
+
+// ====== Character_ApplyAuthCamera ======
+stock Character_ApplyAuthCamera(playerid, E_AUTH_CAMERA_POSITION:cameraPosition)
+{
+    new Float:cameraX;
+    new Float:cameraY;
+    new Float:cameraZ;
+    new Float:cameraAngle;
+    new Float:lookAtX;
+    new Float:lookAtY;
+    new Float:lookAtZ;
+
+    switch (cameraPosition)
+    {
+        case AUTH_CAMERA_POSITION_LOGIN:
+        {
+            cameraX = AUTH_CAMERA_LOGIN_X;
+            cameraY = AUTH_CAMERA_LOGIN_Y;
+            cameraZ = AUTH_CAMERA_LOGIN_Z;
+            cameraAngle = AUTH_CAMERA_LOGIN_A;
+        }
+        case AUTH_CAMERA_POSITION_GATEWAY:
+        {
+            cameraX = AUTH_CAMERA_GATEWAY_X;
+            cameraY = AUTH_CAMERA_GATEWAY_Y;
+            cameraZ = AUTH_CAMERA_GATEWAY_Z;
+            cameraAngle = AUTH_CAMERA_GATEWAY_A;
+        }
+        default:
+        {
+            cameraX = AUTH_CAMERA_REGISTER_X;
+            cameraY = AUTH_CAMERA_REGISTER_Y;
+            cameraZ = AUTH_CAMERA_REGISTER_Z;
+            cameraAngle = AUTH_CAMERA_REGISTER_A;
+        }
+    }
+
+    Character_ResetPlayerView(playerid);
+
+    lookAtX = cameraX + (floatsin(-cameraAngle, degrees) * 12.0);
+    lookAtY = cameraY + (floatcos(-cameraAngle, degrees) * 12.0);
+    lookAtZ = cameraZ - AUTH_CAMERA_HEIGHT_OFFSET;
+
+    SetPlayerPos(playerid, cameraX, cameraY, cameraZ - AUTH_CAMERA_HEIGHT_OFFSET);
+    SetPlayerFacingAngle(playerid, cameraAngle);
+    SetPlayerCameraPos(playerid, cameraX, cameraY, cameraZ);
+    SetPlayerCameraLookAt(playerid, lookAtX, lookAtY, lookAtZ, CAMERA_CUT);
+    return 1;
+}
+
+public OnCharacterReapplyAuthCamera(playerid, cameraPosition)
+{
+    if (!IsPlayerConnected(playerid))
+    {
+        return 0;
+    }
+
+    return Character_ApplyAuthCamera(playerid, E_AUTH_CAMERA_POSITION:cameraPosition);
+}
+
 // ====== Character_ShowGateway ======
 stock Character_ShowGateway(playerid)
 {
@@ -82,6 +187,7 @@ stock Character_ShowGateway(playerid)
     }
 
     Character_ResetPendingState(playerid);
+    Character_SetAuthCamera(playerid, AUTH_CAMERA_POSITION_GATEWAY);
     return Character_LoadSelection(playerid);
 }
 
@@ -108,6 +214,7 @@ stock Character_ShowSelectionDialog(playerid)
     new dialogBody[512];
     new line[96];
 
+    Character_SetAuthCamera(playerid, AUTH_CAMERA_POSITION_GATEWAY);
     Interface_FormatDialogHeader(header, sizeof(header), "Character", "Character Selection");
     format(
         dialogBody,
@@ -151,6 +258,7 @@ stock Character_ShowCreateNameDialog(playerid)
 {
     new header[144];
 
+    Character_SetAuthCamera(playerid, AUTH_CAMERA_POSITION_GATEWAY);
     Interface_FormatDialogHeader(header, sizeof(header), "Character", "Create Character");
     return Dialog_Show(playerid, CharacterCreateName, DIALOG_STYLE_INPUT, header,
         ""TOMATO"Identity"WHITE"\n\
@@ -166,6 +274,7 @@ stock Character_ShowCreateGenDialog(playerid)
 {
     new header[144];
 
+    Character_SetAuthCamera(playerid, AUTH_CAMERA_POSITION_GATEWAY);
     Interface_FormatDialogHeader(header, sizeof(header), "Character", "Select Gender");
     return Dialog_Show(playerid, CharacterCreateGender, DIALOG_STYLE_LIST, header,
         "Male\nFemale",
@@ -495,6 +604,8 @@ stock Character_LoadAndSpawn(playerid, characterId)
 {
     new query[196];
 
+    PlayerLoading_Begin(playerid, CHARACTER_LOADING_TITLE, CHARACTER_LOADING_SUBTITLE);
+
     mysql_format(
         Database_GetHandle(),
         query,
@@ -524,6 +635,7 @@ public OnCharacterLoadAndSpawn(playerid, characterId)
 
     if (cache_num_rows() == 0)
     {
+        PlayerLoading_End(playerid);
         SendErrorMessage(playerid, "Character not found.");
         return Character_ShowGateway(playerid);
     }
@@ -557,8 +669,10 @@ public OnCharacterLoadAndSpawn(playerid, characterId)
         WEAPON_FIST,
         0
     );
+    TogglePlayerSpectating(playerid, false);
     SpawnPlayer(playerid);
     SetCameraBehindPlayer(playerid);
+    PlayerLoading_ScheduleEnd(playerid);
 
     return 1;
 }

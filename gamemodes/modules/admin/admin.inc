@@ -243,7 +243,17 @@ stock Admin_OnPlayerClickMap(playerid, Float:x, Float:y, Float:z)
 {
     #pragma unused z
 
-    if (!Admin_IsDutyAuthorized(playerid, ADMIN_LEVEL_HELPER))
+    if (!AccountSession_IsAuthenticated(playerid))
+    {
+        return 0;
+    }
+
+    if (AdminSession_GetLevel(playerid) < ADMIN_LEVEL_HELPER)
+    {
+        return 0;
+    }
+
+    if (!AdminSession_IsOnDuty(playerid))
     {
         return 0;
     }
