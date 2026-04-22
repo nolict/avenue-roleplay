@@ -1,0 +1,38 @@
+{
+	"user": "nolict",
+	"repo": "avenue-roleplay",
+	"preset": "openmp",
+	"entry": "gamemodes/main.pwn",
+	"output": "gamemodes/main.amx",
+	"dependencies": [
+		"openmultiplayer/omp-stdlib",
+		"pawn-lang/samp-stdlib@open.mp",
+		"pawn-lang/pawn-stdlib@open.mp",
+		"pBlueG/SA-MP-MySQL:R41-4",
+		"Sreyas-Sreelal/samp-bcrypt:0.4.1"
+	],
+	"local": true,
+	"runtime": {
+		"version": "openmp",
+		"plugins": [
+			"pBlueG/SA-MP-MySQL",
+			"Sreyas-Sreelal/samp-bcrypt"
+		]
+	},
+	"build": {
+		"name": "",
+		"args": [
+			"-;+",
+			"-(+",
+			"-d3",
+			"-Z+"
+		],
+		"includes": [
+			"gamemodes",
+			"pawno/include"
+		],
+		"compiler": {
+			"path": "./compiler"
+		}
+	}
+}

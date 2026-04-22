@@ -1,0 +1,65 @@
+#if defined _avenue_core_runtime_included
+    #endinput
+#endif
+#define _avenue_core_runtime_included
+
+#include <modules/interface/messages.inc>
+#include <modules/interface/dialog.inc>
+
+#include <modules/core/config/database.inc>
+#include <modules/core/database/connection.inc>
+
+#include <modules/player/account/session/state.inc>
+#include <modules/player/account.inc>
+
+#include <modules/player/character/session/state.inc>
+#include <modules/player/character.inc>
+
+// ====== Runtime_OnGameModeInit ======
+stock Runtime_OnGameModeInit()
+{
+    SetGameModeText("Avenue Roleplay");
+    UsePlayerPedAnims();
+    DisableInteriorEnterExits();
+
+    if (!Database_Connect())
+    {
+        return 0;
+    }
+
+    Character_OnGameModeInit();
+    Account_OnGameModeInit();
+    return 1;
+}
+
+// ====== Runtime_OnGameModeExit ======
+stock Runtime_OnGameModeExit()
+{
+    Database_Disconnect();
+    return 1;
+}
+
+// ====== Runtime_OnPlayerConnect ======
+stock Runtime_OnPlayerConnect(playerid)
+{
+    Character_OnPlayerConnect(playerid);
+    return Account_OnPlayerConnect(playerid);
+}
+
+// ====== Runtime_OnPlayerDisconnect ======
+stock Runtime_OnPlayerDisconnect(playerid, reason)
+{
+    Character_OnPlayerDisconnect(playerid, reason);
+    return Account_OnPlayerDisconnect(playerid, reason);
+}
+
+// ====== Runtime_OnDialogResponse ======
+stock Runtime_OnDialogResponse(playerid, dialogid, response, listitem, const inputtext[])
+{
+    if (Account_OnDialogResponse(playerid, dialogid, response, listitem, inputtext))
+    {
+        return 1;
+    }
+
+    return Character_OnDialogResponse(playerid, dialogid, response, listitem, inputtext);
+}

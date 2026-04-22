@@ -1,0 +1,198 @@
+{
+	"version": 1,
+	"generated": "2026-04-22T12:59:06.928150604Z",
+	"sampctl_version": "1.13.0",
+	"dependencies": {
+		"github.com/Sreyas-Sreelal/samp-bcrypt": {
+			"constraint": ":0.4.1",
+			"resolved": "0.4.1",
+			"commit": "c60e68d483a95d109855fdd7517425c0363fd10c",
+			"integrity": "commit:c60e68d483a95d109855fdd7517425c0363fd10c",
+			"site": "github.com",
+			"user": "Sreyas-Sreelal",
+			"repo": "samp-bcrypt"
+		},
+		"github.com/openmultiplayer/omp-stdlib": {
+			"constraint": "",
+			"resolved": "HEAD",
+			"commit": "91edd2f03eb48dac50223d862abd812677356047",
+			"integrity": "commit:91edd2f03eb48dac50223d862abd812677356047",
+			"site": "github.com",
+			"user": "openmultiplayer",
+			"repo": "omp-stdlib"
+		},
+		"github.com/pBlueG/SA-MP-MySQL": {
+			"constraint": ":R41-4",
+			"resolved": "R41-4",
+			"commit": "937e6c9f3e72d93c83806e8200361ae99e1b5dfd",
+			"integrity": "commit:937e6c9f3e72d93c83806e8200361ae99e1b5dfd",
+			"site": "github.com",
+			"user": "pBlueG",
+			"repo": "SA-MP-MySQL"
+		},
+		"github.com/pawn-lang/pawn-stdlib": {
+			"constraint": "@open.mp",
+			"resolved": "open.mp",
+			"commit": "2fbfadd53112c508f58982a52c8c7c0332c46be8",
+			"integrity": "commit:2fbfadd53112c508f58982a52c8c7c0332c46be8",
+			"site": "github.com",
+			"user": "pawn-lang",
+			"repo": "pawn-stdlib",
+			"branch": "open.mp"
+		},
+		"github.com/pawn-lang/samp-stdlib": {
+			"constraint": "@open.mp",
+			"resolved": "open.mp",
+			"commit": "dce9af6d16c8b8ec2d38ac78a30a8c9daa3665e5",
+			"integrity": "commit:dce9af6d16c8b8ec2d38ac78a30a8c9daa3665e5",
+			"site": "github.com",
+			"user": "pawn-lang",
+			"repo": "samp-stdlib",
+			"branch": "open.mp"
+		}
+	},
+	"runtime": {
+		"version": "openmp",
+		"platform": "linux",
+		"runtime_type": "",
+		"files": [
+			{
+				"path": "components/Actors.so",
+				"size": 1318084,
+				"hash": "3126caf19e405d606a340d1e84eb273f97db96f19910fbdc891302b04083850c",
+				"mode": 448
+			},
+			{
+				"path": "components/Checkpoints.so",
+				"size": 982212,
+				"hash": "0efca46769f74e04661971d385979fa96851ca33183d2bf6546849ce805ce74e",
+				"mode": 448
+			},
+			{
+				"path": "components/Classes.so",
+				"size": 1162796,
+				"hash": "d34299d3305113145a91bd12b5d06bc6478b4564971e67a9f133936fcee1c769",
+				"mode": 448
+			},
+			{
+				"path": "components/Console.so",
+				"size": 3182756,
+				"hash": "a2d4dbfea361d954661245408eaf7d35fbc21598c77387ca8410ea1924e921d6",
+				"mode": 448
+			},
+			{
+				"path": "components/CustomModels.so",
+				"size": 6582044,
+				"hash": "34d7441f8a880f3982411e1583d23928f8a2670d6c13bf167bf2669024eceac9",
+				"mode": 448
+			},
+			{
+				"path": "components/Databases.so",
+				"size": 6832336,
+				"hash": "d665f669c90fe281ee14894c34b7262a02d75b6edfa1b4d37eac57c5205c9e75",
+				"mode": 448
+			},
+			{
+				"path": "components/Dialogs.so",
+				"size": 1046576,
+				"hash": "a3eb8bd8eb7988975045e47106c7f4ed744db93fbe9e97615e5b47effae511ba",
+				"mode": 448
+			},
+			{
+				"path": "components/GangZones.so",
+				"size": 1268540,
+				"hash": "24820439046b40f64378de25e2a32ed32eec6e7a9ab1ffcd59fafde365b32dd0",
+				"mode": 448
+			},
+			{
+				"path": "components/LegacyConfig.so",
+				"size": 2458868,
+				"hash": "68d8e4be48f696f6d8ec5bd09b547b2a52beaf05a25330b9570b3244c6c25e98",
+				"mode": 448
+			},
+			{
+				"path": "components/LegacyNetwork.so",
+				"size": 11441632,
+				"hash": "32a26f9e58af35462d7a86a276868979c073e2cd58bdce98b153261c847f7f2b",
+				"mode": 448
+			},
+			{
+				"path": "components/Menus.so",
+				"size": 1307624,
+				"hash": "fd7b511723067ce26ff54e0fba6d474323f284a066f2735d19cae3727af8d6bc",
+				"mode": 448
+			},
+			{
+				"path": "components/NPCs.so",
+				"size": 8985692,
+				"hash": "3118630b622d92d1229f6e5cb7375a42fcb8a36147f6ee8027b2f3424321e0b8",
+				"mode": 448
+			},
+			{
+				"path": "components/Objects.so",
+				"size": 1987316,
+				"hash": "46d0030d29f236024b4e6823ba245163d9dcad74bec1dde53c0c09efb6290c44",
+				"mode": 448
+			},
+			{
+				"path": "components/Pawn.so",
+				"size": 20111716,
+				"hash": "a1b3b450c773a87ce68872b0f882f0badd1714d2929009dba1733726c0195bfa",
+				"mode": 448
+			},
+			{
+				"path": "components/Pickups.so",
+				"size": 1270152,
+				"hash": "c2ef3090372be53ec5d30904a46b1af68a8acd7cba6fd1ce2aecbd559d3afcdd",
+				"mode": 448
+			},
+			{
+				"path": "components/Recordings.so",
+				"size": 2648468,
+				"hash": "81b2e0a3219c0aa35b652680bd96b476cd30b9988d616a3be3271aaf64fbe802",
+				"mode": 448
+			},
+			{
+				"path": "components/TextDraws.so",
+				"size": 1490164,
+				"hash": "c305fd9c4d792a795fe4b9647869d01ecf33da61854602dd2a6b736279f39d0c",
+				"mode": 448
+			},
+			{
+				"path": "components/TextLabels.so",
+				"size": 1387232,
+				"hash": "d0d04e380c2519951b64908a5a7460f00b1b80ba039f56cbe6afccf9a4a961e2",
+				"mode": 448
+			},
+			{
+				"path": "components/Timers.so",
+				"size": 637440,
+				"hash": "7d94933ae0af8ccc1f70f3c9ecbdd1a14c90c78ba82d07850adeaa564fe2d1c2",
+				"mode": 448
+			},
+			{
+				"path": "components/Variables.so",
+				"size": 803456,
+				"hash": "4f8f53367dab66596c75ff136adc6ee4697d7ce9c2b996aea003a604cabdd86a",
+				"mode": 448
+			},
+			{
+				"path": "components/Vehicles.so",
+				"size": 1854284,
+				"hash": "acd85d597d8b9fcb7b67ddef83c9b10b45965306883aa6ef863a857e017a2dae",
+				"mode": 448
+			},
+			{
+				"path": "omp-server",
+				"size": 29327552,
+				"hash": "4c402c280168447b841b862386ccc1bc1fd3126cfaad3481be493d84a04689ff",
+				"mode": 448
+			}
+		]
+	},
+	"build": {
+		"entry": "gamemodes/main.pwn",
+		"output": "gamemodes/main.amx",
+		"output_hash": "sha256:1f154f38f08296faf95a4056f39011af82137e7c513e63432b909eff3d1a554d"
+	}
+}
